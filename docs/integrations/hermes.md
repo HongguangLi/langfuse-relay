@@ -1,10 +1,19 @@
 # Hermes → langfuse-relay
 
-Hermes-style agent CLIs generally expose an OpenAI-compatible provider configuration. Two options:
+## LLM tracing proxy (recommended)
 
-## 1. Native OTel (if available)
+Point Hermes's provider base URL at the relay:
 
-If your Hermes build supports standard OTel environment variables:
+```bash
+# OpenAI-compatible endpoint config in Hermes:
+base_url: http://127.0.0.1:4318/proxy/openai
+# or for Anthropic-API builds:
+base_url: http://127.0.0.1:4318/proxy/anthropic
+```
+
+Every completion call is forwarded verbatim (your key passes through) and recorded with model, tokens, and message content. If Hermes talks to a local gateway (LiteLLM, Ollama, NIM), chain it: `langfuse-relay --openai-upstream http://127.0.0.1:4000`.
+
+## OTLP ingest (if your build supports OTel)
 
 ```bash
 export OTEL_TRACES_EXPORTER=otlp
@@ -13,7 +22,3 @@ export OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318
 ```
 
 langfuse-relay accepts both `http/protobuf` and `http/json` OTLP.
-
-## 2. Tracing proxy
-
-Point Hermes's model `base_url` at a LiteLLM proxy with the OTel callback enabled — see the [Claude Code guide](claude-code.md#full-traces-via-litellm-proxy) for the proxy config. Every completion call flows through the proxy and lands in the dashboard with `gen_ai.*` semantics.

@@ -12,6 +12,12 @@ exporter = { otlp-http = { endpoint = "http://127.0.0.1:4318/v1/traces", protoco
 
 Check `codex --help` / the [Codex config docs](https://github.com/openai/codex/blob/main/docs/config.md) for the exact schema on your version — the `[otel]` surface is still evolving.
 
-## Proxy fallback
+## LLM tracing proxy (works on any version)
 
-If your Codex version lacks OTel export, route it through a LiteLLM proxy with the OTel callback (see the [Claude Code guide](claude-code.md#full-traces-via-litellm-proxy) — identical setup, just point `OPENAI_BASE_URL` at the proxy instead).
+Point Codex's OpenAI base URL at the relay's built-in proxy:
+
+```bash
+export OPENAI_BASE_URL=http://127.0.0.1:4318/proxy/openai
+```
+
+Your API key passes through untouched; every LLM call is recorded with model, tokens, and content.

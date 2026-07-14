@@ -1,14 +1,23 @@
 # pi → langfuse-relay
 
-[pi](https://github.com/badlogic/pi-mono) is a minimal, hackable coding agent — which makes it easy to instrument.
+[pi](https://github.com/badlogic/pi-mono) is a minimal, hackable coding agent.
 
-## Tracing proxy (works today)
+## LLM tracing proxy (recommended)
 
-Point pi's provider base URL at a LiteLLM proxy exporting OTLP to langfuse-relay (see the [Claude Code guide](claude-code.md#full-traces-via-litellm-proxy) for the proxy config).
+Point pi's provider base URL at the relay:
 
-## Direct instrumentation (hackable route)
+```bash
+# Anthropic-API models:
+ANTHROPIC_BASE_URL=http://127.0.0.1:4318/proxy/anthropic pi
+# OpenAI-compatible models:
+OPENAI_BASE_URL=http://127.0.0.1:4318/proxy/openai pi
+```
 
-pi's TypeScript core makes it straightforward to emit OTLP/JSON directly — a minimal exporter is just an HTTP POST per LLM call:
+Every LLM call lands in the dashboard with model, tokens, and full content — no code changes.
+
+## Direct OTLP (hackable route)
+
+pi's TypeScript core makes it easy to emit OTLP/JSON directly — a minimal exporter is one HTTP POST per LLM call:
 
 ```ts
 await fetch("http://127.0.0.1:4318/v1/traces", {
@@ -36,4 +45,4 @@ await fetch("http://127.0.0.1:4318/v1/traces", {
 });
 ```
 
-No SDK required — that's the whole payload.
+Useful when you want custom spans (tool calls, agent phases) beyond what the proxy sees.

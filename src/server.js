@@ -8,6 +8,7 @@ import path from 'node:path';
 import { decodeTraceExport } from './otlp.js';
 import { extractSemantics } from './semantics.js';
 import { SpanStore } from './store.js';
+import { handleProxyRequest } from './capture.js';
 
 const UI_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), 'ui', 'index.html');
 
@@ -42,12 +43,34 @@ function sendJson(res, statusCode, body) {
   res.end(payload);
 }
 
-export function createServer({ dbPath, token = null, maxBodyBytes = 32 * 1024 * 1024, logger = console }) {
+export function createServer({
+  dbPath,
+  token = null,
+  maxBodyBytes = 32 * 1024 * 1024,
+  logger = console,
+  upstreams = {},
+}) {
   const store = new SpanStore(dbPath);
+  const proxyUpstreams = {
+    openai: upstreams.openai ?? 'https://api.openai.com',
+    anthropic: upstreams.anthropic ?? 'https://api.anthropic.com',
+  };
 
   const server = http.createServer(async (req, res) => {
     const url = new URL(req.url, 'http://localhost');
     try {
+      const proxyMatch = /^\/proxy\/(openai|anthropic)\//.exec(url.pathname);
+      if (proxyMatch) {
+        const body = await readBody(req, maxBodyBytes);
+        await handleProxyRequest(req, res, body, {
+          provider: proxyMatch[1],
+          upstream: proxyUpstreams[proxyMatch[1]],
+          store,
+          logger,
+        });
+        return;
+      }
+
       if (req.method === 'POST' && INGEST_PATHS.has(url.pathname)) {
         // Auth is optional: local-first means zero-config by default, but a
         // shared token can be required when exposed beyond localhost.
