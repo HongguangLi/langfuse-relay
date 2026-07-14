@@ -14,6 +14,8 @@ const MAX_RECORDED_RESPONSE = 8 * 1024 * 1024;
 const SKIP_HEADERS = new Set([
   'host', 'connection', 'content-length', 'transfer-encoding',
   'keep-alive', 'upgrade', 'proxy-authorization', 'te', 'trailer',
+  // Relay-internal auth header must never leak to the upstream.
+  'x-langfuse-relay-token',
 ]);
 
 function forwardHeaders(req) {

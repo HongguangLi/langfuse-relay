@@ -61,6 +61,14 @@ export function createServer({
     try {
       const proxyMatch = /^\/proxy\/(openai|anthropic)\//.exec(url.pathname);
       if (proxyMatch) {
+        // The Authorization header on proxy routes belongs to the upstream
+        // (it carries the agent's API key), so relay auth uses its own
+        // header here — without this check a non-loopback bind would be an
+        // open relay to the configured upstreams.
+        if (token && req.headers['x-langfuse-relay-token'] !== token) {
+          sendJson(res, 401, { error: 'unauthorized: set x-langfuse-relay-token header' });
+          return;
+        }
         const body = await readBody(req, maxBodyBytes);
         await handleProxyRequest(req, res, body, {
           provider: proxyMatch[1],

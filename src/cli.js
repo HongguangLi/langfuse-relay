@@ -33,7 +33,8 @@ Options:
   --port <n>                Listen port (default 4318, the OTLP/HTTP standard port)
   --host <h>                Bind address (default 127.0.0.1; use 0.0.0.0 to expose)
   --db <path>               SQLite file (default ~/.langfuse-relay/traces.db)
-  --token <t>               Require this bearer/basic token on the ingest endpoint
+  --token <t>               Require this token on ingest (Authorization: Bearer/Basic)
+                            and proxy routes (x-langfuse-relay-token header)
   --openai-upstream <url>   Upstream for /proxy/openai capture (default https://api.openai.com;
                             point at any OpenAI-compatible server: LiteLLM, Ollama, NIM, ...)
   --anthropic-upstream <url> Upstream for /proxy/anthropic capture (default https://api.anthropic.com)
