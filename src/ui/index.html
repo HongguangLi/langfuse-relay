@@ -378,11 +378,17 @@ function renderSpanDetail() {
     ${tabs}${body}`;
 }
 
+let traceSignature = '';
 async function openTrace(traceId, keepSelection = false) {
   activeTraceId = traceId;
   document.querySelectorAll('.trace-row').forEach((el) =>
     el.classList.toggle('active', el.dataset.id === traceId));
   const { spans } = await (await fetch('/api/traces/' + traceId)).json();
+  // Auto-refresh must not destroy reading state (expanded details,
+  // scroll) — skip the re-render entirely when nothing changed.
+  const signature = traceId + ':' + spans.map((s) => s.span_id + s.end_ns).join(',');
+  if (keepSelection && signature === traceSignature) return;
+  traceSignature = signature;
   currentSpans = spans;
   if (!keepSelection || !spans.some((s) => s.span_id === selectedSpanId)) {
     selectedSpanId = (spans.find((s) => s.span_type === 'llm') ?? spans[0])?.span_id ?? null;
