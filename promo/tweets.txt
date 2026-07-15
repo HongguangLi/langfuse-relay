@@ -1,0 +1,81 @@
+====================================================================
+ AgentTap — Twitter / X posts
+ Repo: https://github.com/HongguangLi/agenttap
+ npm:  https://www.npmjs.com/package/agenttap
+====================================================================
+
+
+--------------------------------------------------------------------
+ ★ MAIN TWEET (recommended) — attach agenttap-dashboard-promo.png
+--------------------------------------------------------------------
+
+Your coding agent is quietly burning tokens — can you see where?
+
+AgentTap — local-first observability for Claude Code, Codex, OpenClaw & more:
+
+→ npx agenttap
+→ Langfuse-style dashboard
+→ zero containers, one SQLite file
+→ your prompts never leave your machine
+
+github.com/HongguangLi/agenttap
+
+
+--------------------------------------------------------------------
+ ALT A — "why I built it" (builder narrative)
+--------------------------------------------------------------------
+
+Got tired of standing up 6 containers (Postgres + ClickHouse + Redis + MinIO…) just to self-host Langfuse and trace my coding agents.
+
+So I built AgentTap: the same traces / sessions / cost views in one Node process + one SQLite file.
+
+npx agenttap
+
+github.com/HongguangLi/agenttap
+
+
+--------------------------------------------------------------------
+ ALT B — privacy angle
+--------------------------------------------------------------------
+
+Local-first LLM observability for coding agents.
+
+Every model call, tool run, token & $ your agent makes — on a clean dashboard that runs 100% on your machine. Nothing phones home.
+
+npx agenttap
+github.com/HongguangLi/agenttap
+
+
+--------------------------------------------------------------------
+ THREAD (4 tweets) — img on 1 and 3
+--------------------------------------------------------------------
+
+1/ Your coding agent makes dozens of LLM calls per task.
+AgentTap shows you every one — locally.
+npx agenttap 🧵
+[attach: agenttap-dashboard-promo.png]
+
+2/ Two ways to capture, zero code changes:
+• point any OTLP exporter at it (OpenClaw / NeMo Relay, Codex)
+• or route a provider base URL through its built-in tracing proxy
+Same spans either way.
+
+3/ What you get: waterfall + tree + mind-map trace views, sessions,
+per-user & per-model cost/tokens, full input/output —
+Langfuse-style, but one SQLite file instead of 6 containers.
+[attach: agenttap-trace-promo.png]
+
+4/ Local-first: prompts never leave your machine.
+Apache-2.0, runs on Node ≥22.
+npx agenttap → github.com/HongguangLi/agenttap
+RT if you trace your agents 🙏
+
+
+--------------------------------------------------------------------
+ NOTES
+--------------------------------------------------------------------
+- Always attach an image; posts with media get far more engagement.
+- Post on a weekday morning US-Pacific time.
+- Hashtags (keep to 2–3): #LLM  #observability  #ClaudeCode
+- Don't @-spam big vendor accounts; share into relevant Discords/communities instead.
+- Images live in this folder: agenttap-dashboard-promo.png, agenttap-trace-promo.png

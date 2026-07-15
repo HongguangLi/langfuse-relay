@@ -10,6 +10,8 @@
 npx agenttap    # then open http://127.0.0.1:4318
 ```
 
+![AgentTap dashboard](https://raw.githubusercontent.com/HongguangLi/agenttap/main/promo/agenttap-dashboard-promo.png)
+
 A tiny capture-and-visualize platform purpose-built for coding-agent power users — [Claude Code](https://claude.com/claude-code), [Codex](https://github.com/openai/codex), [OpenClaw](https://openclaw.ai), [opencode](https://github.com/sst/opencode), Hermes, [pi](https://github.com/badlogic/pi-mono) — who want to see every LLM call, token count, and tool execution their agents make, without running a fleet of containers. Agent-native means it speaks the OTLP dialects agents actually emit (GenAI, OpenInference, NeMo Relay) out of the box; local-first means everything — capture, storage, dashboard — runs on your machine and your prompts never leave it.
 
 Inspired by two great projects, absorbing what each does best:
