@@ -203,7 +203,9 @@ Environment variables: `AGENTTAP_PORT`, `AGENTTAP_HOST`, `AGENTTAP_DB`, `AGENTTA
 | Method | Path | Description |
 |---|---|---|
 | POST | `/v1/traces` | OTLP/HTTP trace ingest (protobuf or JSON) |
-| POST | `/api/public/otel/v1/traces` | Langfuse-compatible alias of the above |
+| POST | `/v1/logs` | OTLP logs ingest — log events with model/token data become spans (Claude Code) |
+| POST | `/v1/metrics` | Accepted and ignored (AgentTap visualizes traces, not metrics) |
+| POST | `/api/public/otel/v1/{traces,logs,metrics}` | Langfuse-compatible aliases of the above |
 | ANY | `/proxy/openai/*` | Tracing proxy → `--openai-upstream` (records LLM calls) |
 | ANY | `/proxy/anthropic/*` | Tracing proxy → `--anthropic-upstream` (records LLM calls) |
 | GET | `/api/traces?limit&offset&q&service&session&user&since` | List traces (aggregated) |
