@@ -238,9 +238,14 @@ export function createServer({
       }
 
       if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
-        // Re-read per request so dashboard tweaks don't need a restart.
+        // Re-read per request so dashboard tweaks don't need a restart, and
+        // forbid caching so a plain refresh always shows the current UI
+        // (otherwise browsers serve a stale copy after an upgrade).
         const html = readFileSync(UI_PATH);
-        res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
+        res.writeHead(200, {
+          'content-type': 'text/html; charset=utf-8',
+          'cache-control': 'no-store, must-revalidate',
+        });
         res.end(html);
         return;
       }
