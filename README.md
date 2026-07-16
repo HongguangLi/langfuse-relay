@@ -144,24 +144,14 @@ node examples/send-test-trace.js
 
 **Connect your agent** — point its OTLP exporter at `http://127.0.0.1:4318/v1/traces`, or its provider base URL at `http://127.0.0.1:4318/proxy/*` (see the [per-agent guides](#agent-integration-guides) below).
 
-**Run it persistently** (optional) — as a systemd user service:
+**Run it persistently** (optional) — keep it running across reboots/logouts as
+a background service. Copy-paste setup for **macOS (launchd)** and **Linux
+(systemd)** is in **[docs/running-as-a-service.md](docs/running-as-a-service.md)**.
 
-```ini
-# ~/.config/systemd/user/agenttap.service
-[Unit]
-Description=AgentTap local agent observability
-
-[Service]
-ExecStart=/usr/bin/env node /path/to/agenttap/src/cli.js
-Restart=on-failure
-
-[Install]
-WantedBy=default.target
-```
-
-```bash
-systemctl --user enable --now agenttap
-```
+> Updating a service install is two steps: `npm install -g agenttap@latest`
+> updates the files, then **restart the service** to load the new code
+> (`systemctl --user restart agenttap` on Linux,
+> `launchctl kickstart -k gui/$(id -u)/com.agenttap` on macOS).
 
 ## What it understands
 
